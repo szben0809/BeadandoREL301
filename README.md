@@ -21,9 +21,9 @@ A kód megírását követően beállítottam a Python környezetet, ennek rész
 2. létrehoztam a requirements.txt fájlt, a "flask==3.0.0" tartalommal;
 3. Telepítettem a Flasket a "pip install -r requirements.txt" paranccsal.
 
-Ezután futtattam a programot, majd böngészőből leellenőriztem azt (a terminalban megjelenő hivatkozások mellett a "https://localhost:8080" linken keresztül is).
+Ezután futtattam a programot ("python BeadandoREL301.py"), majd böngészőből leellenőriztem azt (a terminalban megjelenő hivatkozások mellett a "https://localhost:8080" linken keresztül is).
 
-A program hibamentesen elindult, és a Flask alkalmazás a 8080-as proton keresztül HTTP-n elérhetővé vált. A böngészőben a http://localhost:8080 cím megnyitásakor a vártnak megfelelően megjelent a saját üzenetem ("Hello DevOps! Ez Szablics Benedek beadandó feladata.").
+A program hibamentesen elindult, és a Flask alkalmazás a 8080-as porton keresztül HTTP-n elérhetővé vált. A böngészőben a http://localhost:8080 cím megnyitásakor a vártnak megfelelően megjelent a saját üzenetem ("Hello DevOps! Ez Szablics Benedek beadandó feladata.").
 Mindez igazolta, hogy a környezet előkészítése, a függőségek telepítése és a program implementálása sikeresen megtörtént.
 
 ### Ia. Build és (helyi) futtatás - külső felhasználóknak
@@ -42,7 +42,6 @@ Mindez igazolta, hogy a környezet előkészítése, a függőségek telepítés
 Az alkalmazás megírását és a futtatás ellenőrzését követően létrehoztam jelen README.md fájlt, és dokumentáltam az eddig megtett lépéseket. Ezt követően a dokumentációt a hátralevő feladatok kivitelezésével párhuzamosan bővítettem.
 
 
-
 ## III. Git használata - trunk-based fejlesztés
 
 A Git használata érdekében először létrehoztam a .gitignore fájlt a projekt gyökerében, a következő tartalommal:
@@ -50,16 +49,7 @@ A Git használata érdekében először létrehoztam a .gitignore fájlt a proje
 __pycache__/
 *.pyc".
 
-Ezután eltávolítottam a venv mappát a Git stagingből (nem töröltem a fizikális venv mappát, csak kivettem a Git alól):
-
-"git rm -r --cached venv"
-
-
-Ezután kezdőd
-
-
 Erre azért volt szükség, hogy a virtuális környezet (venv/) ne kerüljön a Git repóba.
-
 
 Az alkalmazás fejlesztését, buildelését és a dokumentáció (README.md) készítésének elkezdését követően inicializáltam a Git repository-t a lokális gépen:
 
@@ -67,13 +57,24 @@ Az alkalmazás fejlesztését, buildelését és a dokumentáció (README.md) k�
 git add .
 git commit -m "Initial commit: Elso commit Szablics Benedek DevOps beadandojahoz".
 
-Ezután röviden ellenőriztem az iméntieket a "git status" paranccsal, majd létrehoztam egy publikus GitHub repository-t, összekapcsoltam vele a lokális projektet és feltöltöttem az első commitot a main branchre:
 
-"git remote add origin <repo-URL>
+Ezután röviden ellenőriztem az iméntieket a "git status" paranccsal, majd a github.com-on létrehoztam egy publikus GitHub repository-t, összekapcsoltam vele a lokális projektet és feltöltöttem az első commitot a main branchre:
+
+"git remote add origin https://github.com/szben0809/BeadandoREL301.git
 git branch -M main
 git push -u origin main"
 
 Ezzel a main ág (trunk) létrejött, és a kiinduló projektstruktúra verziókövethetővé vált.
+
+A feladat legalább egy feature branchet ír elő. Ennek megfelelően létrehoztam egy külön fejlesztési ágat:
+
+"git checkout -b feature/kulon-ag"
+
+majd ezt pusholtam:
+
+"git push -u origin feature/kulon-ag"
+
+Ezen az ágon kisebb funkcionális módosítást hajtottam végre ( megváltoztattam a visszaadott üzenet szövegét "Hello DevOps! Ez Szablics Benedek beadandó feladata." helyett "Hello DevOps! Ez Szablics Benedek beadandó feladatának külön fejlesztési ága.), majd commitoltam:
 
 
 
