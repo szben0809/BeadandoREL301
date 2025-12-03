@@ -86,7 +86,7 @@ Ez szerencsére nem okozott problémát.
 
 A módosítások áttekintése, ellenőrzése után a "feature/kulon-ag" ágat összeolvasztottam a main ággal. Ennek érdekében Githubon Pull Requestet hoztam létre "
 
-Emellett a tanultak alkalmazásával létrehoztam még egy külön ágat, amelyben a program a "Hello Devops! Ez megint egy másik szöveg" szöveget írja ki.
+Emellett a tanultak alkalmazásával létrehoztam még egy külön ágat, amelyben a program a "Hello Devops! Ez megint egy másik szöveg." szöveget írja ki.
 
 ## III. Buildelés
 
