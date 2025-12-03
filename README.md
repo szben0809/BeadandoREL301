@@ -74,10 +74,19 @@ majd ezt pusholtam:
 
 "git push -u origin feature/kulon-ag"
 
-Ezen az ágon kisebb funkcionális módosítást hajtottam végre ( megváltoztattam a visszaadott üzenet szövegét "Hello DevOps! Ez Szablics Benedek beadandó feladata." helyett "Hello DevOps! Ez Szablics Benedek beadandó feladatának külön fejlesztési ága.), majd commitoltam:
+Ezen az ágon kisebb funkcionális módosítást hajtottam végre a VS Codeban: megváltoztattam a visszaadott üzenet szövegét "Hello DevOps! Ez Szablics Benedek beadandó feladata." helyett "Hello DevOps! Ez Szablics Benedek beadandó feladatának külön fejlesztési ága.", majd commitoltam:
 
+"git commit -m "A kiírás megváltoztatása".
 
+Mivel először véletlenül rossz címet adtam a commitnak, ezt javítanom kellett, amelynek érdekében force push-t alkalmaztam:
 
+"git push --force-with-lease origin feature/kulon-ag".
+
+Ez szerencsére nem okozott problémát.
+
+A módosítások áttekintése, ellenőrzése után a "feature/kulon-ag" ágat összeolvasztottam a main ággal. Ennek érdekében Githubon Pull Requestet hoztam létre "
+
+Emellett a tanultak alkalmazásával létrehoztam még egy külön ágat, amelyben a program a "Hello Devops! Ez megint egy másik szöveg" szöveget írja ki.
 
 ## III. Buildelés
 
