@@ -5,28 +5,29 @@
 Ez a projekt a Gábor Dénes Egyetem mérnökinformatikus BSc képzése keretében( távoktatás munkarend) megszervezett "DevOps" c. tantárgy teljesítésének (egyik) feltételeként meghatározott beadandó feladat elkészítésének rövid dokumentációját tartalmazza.
 
 A programot Visual Studio Code fejlesztői környezetben, Python nyelven írtam. A szerver létrehozása, valamint az alkalmazás böngészőből történő elérhetőségének biztosítása érdekében Flask webes keretrendszert használtam.
-Egy egyszerű Flask alapú webalkalmazásról van tehát szó, amely HTTP-n, a 8080-as porton érhető el, és egy rövid szöveget ("Hello DevOps! Ez Szablics Benedek beadandó feladata.") jelenít meg.
+Egy egyszerű Flask alapú webalkalmazásról van tehát szó, amely HTTP-n, a 8080-as porton érhető el, és egy rövid szöveget (eredetileg: "Hello DevOps! Ez Szablics Benedek beadandó feladata.") jelenít meg.
 
 A verziókövetéshez Gitet, a konténeralapú virtualizációhoz Dockert, a fejlesztői környezet egységesítéséhez és reprodukálhatóságához pedig Dev Containert használtam. A repository-t GitHubon tároltam.
 
-A beadandó elkészítése nagyvonalakban a következő lépésekből állt:
+A beadandó elkészítése nagyvonalakban az alábbi lépésekből állt.
 
 ## I. Alkalmazás (fejlesztés és build)
 
 Az alkalmazás tehát Python és Flask segítségével készült.
 A programot az azonos elnevezésű projektmappa létrehozását követően "BeadandoREL301.py" néven mentettem.
 
-A kód megírását követően beállítottam a Python környezetet, ennek részeként:
+A kód megírása után beállítottam a Python környezetet, ennek részeként:
 1. létrehoztam és aktiváltam a virtuális környezetet (venv) ["py -m venv venv", majd "venv\Scripts\activate" parancs a terminalba (cmd)];
-2. létrehoztam a requirements.txt fájlt, a "flask==3.0.0" tartalommal;
+2. létrehoztam a requirements.txt fájlt, "flask==3.0.0" tartalommal;
 3. Telepítettem a Flasket a "pip install -r requirements.txt" paranccsal.
-
 
 Ezután futtattam a programot, majd böngészőből leellenőriztem azt (a terminalban megjelenő hivatkozások mellett a "https://localhost:8080" linken keresztül is).
 
-
-A program hibamentesen elindult, és a Flask alkalmazás a 8080-as proton keresztül HTTP-n elérhetővé vált. A böngészőben a http://localhost:8080 cím megnyitásakor a vártnak megfelelően megjelent a saját üzenetem ("Hello DevOps! Ez Szablics Benedek beadandó feladata.").
+A program hibamentesen elindult, a Flask alkalmazás a 8080-as proton keresztül HTTP-n elérhetővé vált. A böngészőben a http://localhost:8080 cím megnyitásakor a vártnak megfelelően megjelent a saját üzenetem (eredetileg: "Hello DevOps! Ez Szablics Benedek beadandó feladata.").
 Mindez igazolta, hogy a környezet előkészítése, a függőségek telepítése és a program implementálása sikeresen megtörtént.
+
+(A beadandó feladatot megelőzően készítettem magamnak egy próbabeadandót. A szükséges programokat, állományokat így korábban már telepítettem, a GitHub-ot újra "beizzítottam" stb.)
+
 
 ### Ia. Build és (helyi) futtatás - külső felhasználóknak
 
@@ -41,8 +42,7 @@ Mindez igazolta, hogy a környezet előkészítése, a függőségek telepítés
 
 ## II. README.md
 
-Az alkalmazás megírását és a futtatás ellenőrzését követően létrehoztam jelen README.md fájlt, és dokumentáltam az eddig megtett lépéseket. Ezt követően a dokumentációt a hátralevő feladatok kivitelezésével párhuzamosan bővítettem.
-
+Az alkalmazás megírását és a futtatás ellenőrzését követően létrehoztam jelen README.md fájlt, és feljegyeztem az addig megtett lépéseket. Ezt követően a dokumentációt a hátralevő feladatok kivitelezésével párhuzamosan bővítettem.
 
 
 ## III. Git használata - trunk-based fejlesztés
@@ -52,21 +52,17 @@ A Git használata érdekében először létrehoztam a .gitignore fájlt a proje
 __pycache__/
 *.pyc".
 
-
 Ezután eltávolítottam a venv mappát a Git stagingből (nem töröltem a fizikális venv mappát, csak kivettem a Git alól):
 
 "git rm -r --cached venv".
 
-
 Erre azért volt szükség, hogy a virtuális környezet (venv/) ne kerüljön a Git repóba.
-
 
 Az alkalmazás fejlesztését, buildelését és a dokumentáció (README.md) készítésének elkezdését követően inicializáltam a Git repository-t a lokális gépen:
 
 "git init
 git add .
 git commit -m "Initial commit: Elso commit Szablics Benedek DevOps beadandojahoz".
-
 
 Ezután röviden ellenőriztem az iméntieket a "git status" paranccsal, majd létrehoztam egy publikus GitHub repository-t, összekapcsoltam vele a lokális projektet és feltöltöttem az első commitot a main branchre:
 
@@ -77,7 +73,7 @@ git push -u origin main".
 
 Ezzel a main ág (trunk) létrejött, és a kiinduló projektstruktúra verziókövethetővé vált.
 
-A feladat legalább egy feature branchet ír elő. Ennek megfelelően létrehoztam egy külön fejlesztési ágat:
+A feladat legalább egy feature branchet írt elő. Ennek megfelelően létrehoztam egy külön fejlesztési ágat (később pedig még egyet, ahogy írom):
 
 "git checkout -b feature/kulon-ag"
 
@@ -98,6 +94,8 @@ Ez szerencsére nem okozott problémát.
 A módosítások áttekintése, ellenőrzése után a "feature/kulon-ag" ágat összeolvasztottam a main ággal. Ennek érdekében Githubon Pull Requestet hoztam létre.
 
 Emellett a tanultak alkalmazásával létrehoztam még egy külön ágat, amelyben a program a "Hello Devops! Ez megint egy másik szöveg." szöveget írja ki.
+
+Itt megjegyzem, hogy mivel a repository-t még a dockerizálás előtt létrehoztam, így utóbb ezen "ujabb-ag" branchben dolgoztam, majd később a szükséges kiegészítéseket a mergelt ágra/ágakra is átvezettem.
 
 
 
@@ -139,7 +137,7 @@ Az elkészült image a következő paranccsal futtatható:
 
 ## V. Dev Container (kötelezően választandó feladat)
 
-A projekt fejlesztéséhez és későbbi reprodukálhatóságához Visual Studio Code Dev Containert hoztam létre. Ennek célja, hogy a fejlesztői környezet egységesen, konténerben legyen biztosítva, függetlenül a host gép beállításaitól.
+A projekt fejlesztéséhez és későbbi reprodukálhatóságához Visual Studio Code Dev Containert alkalmaztam. Ennek célja, hogy a fejlesztői környezet egységesen, konténerben legyen biztosítva, függetlenül a host gép beállításaitól.
 
 ### V.1. Dev Container konfiguráció
 
@@ -168,6 +166,7 @@ RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace".
 
+
 A fenti konfiguráció biztosítja, hogy
 - a Dev Container a python:3.12-slim image-re épüljön,
 - elérhető legyen a Git a konténeren belül,
@@ -178,14 +177,14 @@ A fenti konfiguráció biztosítja, hogy
 ## Va. A projekt megnyitása és futtatása Dev Containerben - külső felhasználóknak
 
 ### i. Előfeltételek
-A projekt megnyitásához, futtattásához Docker, Visual Studio Code, illetve utóbbiban Dev Containers kiegészítő telepítése szükséges.
+A projekt megnyitásához, futtattásához Docker, Visual Studio Code, illetve utóbbiban Dev Containers bővítmény telepítése szükséges.
 
 ### ii. Projekt megnyitása konténerben
 
 A projekt megnyitása érdekében az alábbi lépéseket érdemes követni:
 
 1. Nyisd meg a projekt mappáját Visual Studio Code-ban.
-2. A VS Code jobb alsó sarkában megjelenő értesítésnél váalszd a "Reopen in Container" opciót.
+2. A VS Code jobb alsó sarkában megjelenő értesítésnél válaszd a "Reopen in Container" opciót.
 3. A Dev Container buildelése és indítása néhány percet igénybe vehet. A folyamat végén a projekt már a konténeren belüli Python-környezetben lesz megnyitva.
 
 ### iii. Alkalmazás futtatása Dev Containerben
