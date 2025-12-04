@@ -21,7 +21,9 @@ A kód megírását követően beállítottam a Python környezetet, ennek rész
 2. létrehoztam a requirements.txt fájlt, a "flask==3.0.0" tartalommal;
 3. Telepítettem a Flasket a "pip install -r requirements.txt" paranccsal.
 
+
 Ezután futtattam a programot, majd böngészőből leellenőriztem azt (a terminalban megjelenő hivatkozások mellett a "https://localhost:8080" linken keresztül is).
+
 
 A program hibamentesen elindult, és a Flask alkalmazás a 8080-as proton keresztül HTTP-n elérhetővé vált. A böngészőben a http://localhost:8080 cím megnyitásakor a vártnak megfelelően megjelent a saját üzenetem ("Hello DevOps! Ez Szablics Benedek beadandó feladata.").
 Mindez igazolta, hogy a környezet előkészítése, a függőségek telepítése és a program implementálása sikeresen megtörtént.
@@ -50,9 +52,10 @@ A Git használata érdekében először létrehoztam a .gitignore fájlt a proje
 __pycache__/
 *.pyc".
 
+
 Ezután eltávolítottam a venv mappát a Git stagingből (nem töröltem a fizikális venv mappát, csak kivettem a Git alól):
 
-"git rm -r --cached venv"
+"git rm -r --cached venv".
 
 
 Erre azért volt szükség, hogy a virtuális környezet (venv/) ne kerüljön a Git repóba.
@@ -63,6 +66,7 @@ Az alkalmazás fejlesztését, buildelését és a dokumentáció (README.md) k�
 "git init
 git add .
 git commit -m "Initial commit: Elso commit Szablics Benedek DevOps beadandojahoz".
+
 
 Ezután röviden ellenőriztem az iméntieket a "git status" paranccsal, majd létrehoztam egy publikus GitHub repository-t, összekapcsoltam vele a lokális projektet és feltöltöttem az első commitot a main branchre:
 
@@ -95,14 +99,99 @@ A módosítások áttekintése, ellenőrzése után a "feature/kulon-ag" ágat �
 
 Emellett a tanultak alkalmazásával létrehoztam még egy külön ágat, amelyben a program a "Hello Devops! Ez megint egy másik szöveg." szöveget írja ki.
 
-## III. Buildelés
 
 
+## IV. Dockerizálás
 
-## III. Buildelés - Docker Image készítés
+A projekt gyökérkönyvtárában létrehoztam egy "Dockerfile" nevű fájlt az alábbi tartalommal:
 
-Python/Flask esetén a buildelés optimálisan megoldható Docker image készítés által.
+"FROM python:3.12-slim
 
-### IIIa. Útmutató a buildeléshez külső személy számára
+WORKDIR /app
 
-A docker image a "docker build -t hello-devops:v1" paranccsal építhető. A futtatás a "docker run -p 8080:8080 hello-devops:v1" parancsra történik.
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 8080
+
+CMD ["python", "BeadandoREL301.py"]"
+
+Ez a Dockerfile beállítja az /app munkakönyvtárat, bemásolja a requirements.txt fájlt, telepíti a szükséges függőségeket, bemásolja az alkalmazás forráskódját a konténerbe, illetve beállítja, hogy a konténer indulásakor automatikusan elinduljon a Flask alkalmazás a BeadandoREL301.py futtatásával.
+
+### IVa. Docker image buildelése és futtatása - külső felhasználóknak
+
+Az alkalmazás Docker-konténerben történő felépítéséhez és futtatásához az alábbi parancsok szükségesek:
+
+#### (A) Image buildelése
+A projekt gyökérkönyvtárában az alábbi paranccsal hozható létre a Docker image:
+
+"docker build -t devops-beadando-rel301:v1 ."
+
+[Ez a parancs felépíti a devops-beadando-rel301:v1 nevű Docker imaget a fenti Dockerfile felhasználásával].
+
+#### (B) Konténer futtatása
+
+Az elkészült image a következő paranccsal futtatható:
+
+"docker run -p 8080:8080 devops-beadando-rel301:v1".
+
+## V. Dev Container (kötelezően választandó feladat)
+
+A projekt fejlesztéséhez és későbbi reprodukálhatóságához Visual Studio Code Dev Containert hoztam létre. Ennek célja, hogy a fejlesztői környezet egységesen, konténerben legyen biztosítva, függetlenül a host gép beállításaitól.
+
+### V.1. Dev Container konfiguráció
+
+A projekt gyökérkönyvtárában létrehoztam egy ".devcontainer" nevű mappát, a "devcontainer.json", illetve a "Dockerfile" fájlokkal.
+
+
+### A ".devcontainer/devcontainer.json" tartalma:
+{  "name": "DevOps Beadando REL301",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/workspace",
+  "forwardPorts": [8080],
+  "postCreateCommand": "pip install -r requirements.txt",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python"]}}}.
+
+### A ".devcontainer/Dockerfile" tartalma:
+
+"FROM python:3.12-slim
+
+RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace".
+
+A fenti konfiguráció biztosítja, hogy
+- a Dev Container a python:3.12-slim image-re épüljön,
+- elérhető legyen a Git a konténeren belül,
+- a projekt forráskódja a /workspace könyvtárba legyen felcsatolva,
+- a konténer létrehozását követően automatikusan lefusson a pip install -r requirements.txt parancs (így a szükséges Python-függőségek azonnal rendelkezésre állnak),
+- a 8080-as port forwaldolva legyen, így a Flask alkalmazás Dev Containerből futtatva is elérhető legyen a host gépről.
+
+## Va. A projekt megnyitása és futtatása Dev Containerben - külső felhasználóknak
+
+### i. Előfeltételek
+A projekt megnyitásához, futtattásához Docker, Visual Studio Code, illetve utóbbiban Dev Containers kiegészítő telepítése szükséges.
+
+### ii. Projekt megnyitása konténerben
+
+A projekt megnyitása érdekében az alábbi lépéseket érdemes követni:
+
+1. Nyisd meg a projekt mappáját Visual Studio Code-ban.
+2. A VS Code jobb alsó sarkában megjelenő értesítésnél váalszd a "Reopen in Container" opciót.
+3. A Dev Container buildelése és indítása néhány percet igénybe vehet. A folyamat végén a projekt már a konténeren belüli Python-környezetben lesz megnyitva.
+
+### iii. Alkalmazás futtatása Dev Containerben
+
+A VS Code beépített termináljában a konténer elindulását követően a "python BeadandoREL301.py" paranccsal futtatható az alkalmazás.
+
+Sikeres indítást követően az alkalmazás a host gépről is elérhető a böngészőben a "http://localhost:8080" linken.
+
+A Dev Container így biztosítja, hogy a projekt egy könnyen reprodukálható, egységes fejlesztői környezetben fusson, függetlenül a host rendszer egyedi beállításaitól.
