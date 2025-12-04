@@ -2,7 +2,7 @@
 
 ## Általános információk és a projekt során használt fejlesztői eszközök
 
-Ez a projekt a Gábor Dénes Egyetem mérnökinformatikus BSc képzése keretében( távoktatás munkarend) megszervezett "DevOps" c. tantárgy teljesítésének (egyik) feltételeként meghatározott beadandó feladat elkészítésének rövid dokumentációját tartalmazza.
+Ez a projekt a Gábor Dénes Egyetem mérnökinformatikus BSc képzése keretében (távoktatás munkarend) megszervezett "DevOps" c. tantárgy teljesítésének (egyik) feltételeként meghatározott beadandó feladat elkészítésének rövid dokumentációját tartalmazza.
 
 A programot Visual Studio Code fejlesztői környezetben, Python nyelven írtam. A szerver létrehozása, valamint az alkalmazás böngészőből történő elérhetőségének biztosítása érdekében Flask webes keretrendszert használtam.
 Egy egyszerű Flask alapú webalkalmazásról van tehát szó, amely HTTP-n, a 8080-as porton érhető el, és egy rövid szöveget (eredetileg: "Hello DevOps! Ez Szablics Benedek beadandó feladata.") jelenít meg.
@@ -21,15 +21,15 @@ A kód megírása után beállítottam a Python környezetet, ennek részeként:
 2. létrehoztam a requirements.txt fájlt, "flask==3.0.0" tartalommal;
 3. Telepítettem a Flasket a "pip install -r requirements.txt" paranccsal.
 
-Ezután futtattam a programot, majd böngészőből leellenőriztem azt (a terminalban megjelenő hivatkozások mellett a "https://localhost:8080" linken keresztül is).
+Ezután futtattam a programot, majd böngészőből leellenőriztem azt (a terminalban megjelenő hivatkozások mellett a "http://localhost:8080" linken keresztül is).
 
 A program hibamentesen elindult, a Flask alkalmazás a 8080-as proton keresztül HTTP-n elérhetővé vált. A böngészőben a http://localhost:8080 cím megnyitásakor a vártnak megfelelően megjelent a saját üzenetem (eredetileg: "Hello DevOps! Ez Szablics Benedek beadandó feladata.").
 Mindez igazolta, hogy a környezet előkészítése, a függőségek telepítése és a program implementálása sikeresen megtörtént.
 
-(A beadandó feladatot megelőzően készítettem magamnak egy próbabeadandót. A szükséges programokat, állományokat így korábban már telepítettem, a GitHub-ot újra "beizzítottam" stb.)
+[Az "éles" beadandó feladatot megelőzően készítettem magamnak egy próbabeadandót. A szükséges programokat (pl. Docker.Desktop), bővítményeket így korábban már telepítettem, a GitHub-ot újra "beizzítottam" stb.]
 
 
-### Ia. Build és (helyi) futtatás - külső felhasználóknak
+### Ia. Build és (helyi) futtatás külső felhasználóknak (a feladatleírás 2.1. pontja szerinti "Build" szekció)
 
 #### A buildeléshez a következő parancs szükséges:
 
@@ -45,7 +45,7 @@ Mindez igazolta, hogy a környezet előkészítése, a függőségek telepítés
 Az alkalmazás megírását és a futtatás ellenőrzését követően létrehoztam jelen README.md fájlt, és feljegyeztem az addig megtett lépéseket. Ezt követően a dokumentációt a hátralevő feladatok kivitelezésével párhuzamosan bővítettem.
 
 
-## III. Git használata - trunk-based fejlesztés
+## III. Git használata, verziókövetés(trunk-based)
 
 A Git használata érdekében először létrehoztam a .gitignore fájlt a projekt gyökerében, a következő tartalommal:
 "venv/
@@ -81,7 +81,7 @@ majd ezt pusholtam:
 
 "git push -u origin feature/kulon-ag"
 
-Ezen az ágon kisebb funkcionális módosítást hajtottam végre a VS Codeban: megváltoztattam a visszaadott üzenet szövegét "Hello DevOps! Ez Szablics Benedek beadandó feladata." helyett "Hello DevOps! Ez Szablics Benedek beadandó feladatának külön fejlesztési ága.", majd commitoltam:
+Ezen az ágon kisebb (nem funkcionális) módosítást hajtottam végre a VS Code-ban: megváltoztattam a visszaadott üzenet szövegét "Hello DevOps! Ez Szablics Benedek beadandó feladata." helyett "Hello DevOps! Ez Szablics Benedek beadandó feladatának külön fejlesztési ága.", majd commitoltam:
 
 "git commit -m "A kiírás megváltoztatása".
 
@@ -95,8 +95,7 @@ A módosítások áttekintése, ellenőrzése után a "feature/kulon-ag" ágat �
 
 Emellett a tanultak alkalmazásával létrehoztam még egy külön ágat, amelyben a program a "Hello Devops! Ez megint egy másik szöveg." szöveget írja ki.
 
-Itt megjegyzem, hogy mivel a repository-t még a dockerizálás előtt létrehoztam, így utóbb ezen "ujabb-ag" branchben dolgoztam, majd később a szükséges kiegészítéseket a mergelt ágra/ágakra is átvezettem.
-
+Itt megjegyzem, hogy utóbb ezen "ujabb-ag" branchben dolgoztam, itt teszteltem a módosításokat, majd végül mergeltem ezt is a main-nel. [Eredetileg csak a feltétlenül szükséges elemeket terveztem a korábban mergelt (main/kulon-ag) ágra átvezetni, mivel így egyszerűen volt biztosítható, hogy kétféle szöveget kiíró programváltozat is közvetlenül hozzáférhető legyen. Utóbb viszont beláttam, hogy a letisztultság és a koherencia érdekében érdemes inkább az összes branchet és a trunkot egységesíteni.]
 
 
 ## IV. Dockerizálás
@@ -120,14 +119,14 @@ Ez a Dockerfile beállítja az /app munkakönyvtárat, bemásolja a requirements
 
 ### IVa. Docker image buildelése és futtatása - külső felhasználóknak
 
-Az alkalmazás Docker-konténerben történő felépítéséhez és futtatásához az alábbi parancsok szükségesek:
+Az alkalmazás Docker-konténerben történő felépítéséhez és futtatásához a következő parancsok szükségesek:
 
 #### (A) Image buildelése
 A projekt gyökérkönyvtárában az alábbi paranccsal hozható létre a Docker image:
 
 "docker build -t devops-beadando-rel301:v1 ."
 
-[Ez a parancs felépíti a devops-beadando-rel301:v1 nevű Docker imaget a fenti Dockerfile felhasználásával].
+(Ez a parancs felépíti a devops-beadando-rel301:v1 nevű Docker imaget a fenti Dockerfile felhasználásával).
 
 #### (B) Konténer futtatása
 
@@ -144,7 +143,7 @@ A projekt fejlesztéséhez és későbbi reprodukálhatóságához Visual Studio
 A projekt gyökérkönyvtárában létrehoztam egy ".devcontainer" nevű mappát, a "devcontainer.json", illetve a "Dockerfile" fájlokkal.
 
 
-### A ".devcontainer/devcontainer.json" tartalma:
+#### A ".devcontainer/devcontainer.json" tartalma:
 {  "name": "DevOps Beadando REL301",
   "build": {
     "dockerfile": "Dockerfile",
@@ -158,7 +157,7 @@ A projekt gyökérkönyvtárában létrehoztam egy ".devcontainer" nevű mappát
       "extensions": [
         "ms-python.python"]}}}.
 
-### A ".devcontainer/Dockerfile" tartalma:
+#### A ".devcontainer/Dockerfile" tartalma:
 
 "FROM python:3.12-slim
 
@@ -172,14 +171,14 @@ A fenti konfiguráció biztosítja, hogy
 - elérhető legyen a Git a konténeren belül,
 - a projekt forráskódja a /workspace könyvtárba legyen felcsatolva,
 - a konténer létrehozását követően automatikusan lefusson a pip install -r requirements.txt parancs (így a szükséges Python-függőségek azonnal rendelkezésre állnak),
-- a 8080-as port forwaldolva legyen, így a Flask alkalmazás Dev Containerből futtatva is elérhető legyen a host gépről.
+- a 8080-as port forwaldolva legyen, így a Flask alkalmazás Dev Containerből futtatva is elérhető a host gépről.
 
-## Va. A projekt megnyitása és futtatása Dev Containerben - külső felhasználóknak
+### Va. A projekt megnyitása és futtatása Dev Containerben - külső felhasználóknak
 
-### i. Előfeltételek
+#### i. Előfeltételek
 A projekt megnyitásához, futtattásához Docker, Visual Studio Code, illetve utóbbiban Dev Containers bővítmény telepítése szükséges.
 
-### ii. Projekt megnyitása konténerben
+#### ii. A Dev Container buildelése és megnyitása
 
 A projekt megnyitása érdekében az alábbi lépéseket érdemes követni:
 
@@ -187,10 +186,13 @@ A projekt megnyitása érdekében az alábbi lépéseket érdemes követni:
 2. A VS Code jobb alsó sarkában megjelenő értesítésnél válaszd a "Reopen in Container" opciót.
 3. A Dev Container buildelése és indítása néhány percet igénybe vehet. A folyamat végén a projekt már a konténeren belüli Python-környezetben lesz megnyitva.
 
-### iii. Alkalmazás futtatása Dev Containerben
+#### iii. Alkalmazás futtatása Dev Containerben
 
 A VS Code beépített termináljában a konténer elindulását követően a "python BeadandoREL301.py" paranccsal futtatható az alkalmazás.
 
-Sikeres indítást követően az alkalmazás a host gépről is elérhető a böngészőben a "http://localhost:8080" linken.
+A sikeres indítást követően az alkalmazás a host gépről is elérhető a böngészőben a "http://localhost:8080" linken.
 
 A Dev Container így biztosítja, hogy a projekt egy könnyen reprodukálható, egységes fejlesztői környezetben fusson, függetlenül a host rendszer egyedi beállításaitól.
+
+## VI. TXT fájl létrehozása és a repository nyilvánosságának ellenőrzése
+A beadandó érdemi részének finomhangolását követően a feladatleírás szerint létrehoztam a TXT fájlt, amely a repository elérhetőségét tartalmazza. A beadás előtt a hivatkozást  inkognitó módban is megnyitottam, így meggyőződtem arról, hogy a link valóban publikus.
